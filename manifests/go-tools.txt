@@ -1,0 +1,9 @@
+# binary|install module|version|build module
+gopls|golang.org/x/tools/gopls|v0.23.0|golang.org/x/tools/gopls
+gofumpt|mvdan.cc/gofumpt|v0.12.0|mvdan.cc/gofumpt
+goimports|golang.org/x/tools/cmd/goimports|v0.50.0|golang.org/x/tools
+golangci-lint|github.com/golangci/golangci-lint/v2/cmd/golangci-lint|v2.13.2|github.com/golangci/golangci-lint/v2
+dlv|github.com/go-delve/delve/cmd/dlv|v1.27.2|github.com/go-delve/delve
+gomodifytags|github.com/fatih/gomodifytags|v1.17.0|github.com/fatih/gomodifytags
+impl|github.com/josharian/impl|v1.5.0|github.com/josharian/impl
+staticcheck|honnef.co/go/tools/cmd/staticcheck|v0.8.1|honnef.co/go/tools
