@@ -44,8 +44,10 @@ info "Target release:  ${target_tag}"
 
 mkdir -p "$RELEASES_DIR"
 target_dir="${RELEASES_DIR}/${target_tag}"
-if [[ ! -d "$target_dir" ]]; then
+if [[ ! -x "${target_dir}/bin/nvim-go" ]]; then
   temp="$(mktemp -d)"
+  stage="${RELEASES_DIR}/.${target_tag}.tmp.$$"
+  trap 'rm -rf "$temp" "$stage"' EXIT
   asset="${PROJECT_NAME}-${target_tag}.tar.gz"
   base="https://github.com/${REPOSITORY}/releases/download/${target_tag}"
   info "Downloading ${asset}."
@@ -53,9 +55,14 @@ if [[ ! -d "$target_dir" ]]; then
   download "${base}/SHA256SUMS" "${temp}/SHA256SUMS"
   expected="$(awk -v name="$asset" '$2 == name { print $1 }' "${temp}/SHA256SUMS")"
   verify_sha256 "${temp}/${asset}" "$expected"
-  mkdir -p "$target_dir"
-  tar -xzf "${temp}/${asset}" --strip-components=1 -C "$target_dir"
+  rm -rf "$stage"
+  mkdir -p "$stage"
+  tar -xzf "${temp}/${asset}" --strip-components=1 -C "$stage"
+  [[ -x "${stage}/bin/nvim-go" ]] || die "The release archive is incomplete."
+  rm -rf "$target_dir"
+  mv "$stage" "$target_dir"
   rm -rf "$temp"
+  trap - EXIT
 fi
 
 info "Installing and validating ${target_tag}."

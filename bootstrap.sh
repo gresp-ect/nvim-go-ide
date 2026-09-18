@@ -19,20 +19,32 @@ effective="$(curl --fail --location --silent --show-error --output /dev/null \
 tag="${effective##*/tag/}"
 asset="${PROJECT_NAME}-${tag}.tar.gz"
 base="https://github.com/${REPOSITORY}/releases/download/${tag}"
-temp="$(mktemp -d)"
-trap 'rm -rf "$temp"' EXIT
-
-printf 'Downloading %s...\n' "$asset"
-curl --fail --location --retry 3 --silent --show-error "${base}/${asset}" --output "${temp}/${asset}"
-curl --fail --location --retry 3 --silent --show-error "${base}/SHA256SUMS" --output "${temp}/SHA256SUMS"
-expected="$(awk -v name="$asset" '$2 == name { print $1 }' "${temp}/SHA256SUMS")"
-[[ -n "$expected" ]] || die "The release checksum is missing."
-printf '%s  %s\n' "$expected" "${temp}/${asset}" | sha256sum --check --status \
-  || die "Release checksum verification failed."
-
 target="${RELEASES_DIR}/${tag}"
-mkdir -p "$target" "$LOCAL_BIN"
-tar -xzf "${temp}/${asset}" --strip-components=1 -C "$target"
+mkdir -p "$RELEASES_DIR" "$LOCAL_BIN"
+
+if [[ ! -x "${target}/bin/nvim-go" ]]; then
+  temp="$(mktemp -d)"
+  stage="${RELEASES_DIR}/.${tag}.tmp.$$"
+  trap 'rm -rf "$temp" "$stage"' EXIT
+
+  printf 'Downloading %s...\n' "$asset"
+  curl --fail --location --retry 3 --silent --show-error "${base}/${asset}" --output "${temp}/${asset}"
+  curl --fail --location --retry 3 --silent --show-error "${base}/SHA256SUMS" --output "${temp}/SHA256SUMS"
+  expected="$(awk -v name="$asset" '$2 == name { print $1 }' "${temp}/SHA256SUMS")"
+  [[ -n "$expected" ]] || die "The release checksum is missing."
+  printf '%s  %s\n' "$expected" "${temp}/${asset}" | sha256sum --check --status \
+    || die "Release checksum verification failed."
+
+  rm -rf "$stage"
+  mkdir -p "$stage"
+  tar -xzf "${temp}/${asset}" --strip-components=1 -C "$stage"
+  [[ -x "${stage}/bin/nvim-go" ]] || die "The release archive is incomplete."
+  rm -rf "$target"
+  mv "$stage" "$target"
+  trap - EXIT
+  rm -rf "$temp"
+fi
+
 chmod +x "${target}/bin/nvim-go" "${target}/bootstrap.sh" "${target}"/lib/*.sh
 ln -sfn "$target" "${DATA_ROOT}/current"
 ln -sfn "${DATA_ROOT}/current/bin/nvim-go" "${LOCAL_BIN}/nvim-go"
