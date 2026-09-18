@@ -18,6 +18,10 @@ BACKUP_DIR="${STATE_DIR}/backups"
 USER_CONFIG_DIR="${HOME}/.config/${PROJECT_NAME}"
 NVIM_CONFIG="${HOME}/.config/nvim"
 
+# Management commands must work immediately after installation, even before a
+# new interactive shell has sourced the PATH block written by the installer.
+export PATH="${LOCAL_BIN}:${PATH}"
+
 info() { printf '\033[1;34m==>\033[0m %s\n' "$*"; }
 success() { printf '\033[1;32m==>\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33mWarning:\033[0m %s\n' "$*" >&2; }
