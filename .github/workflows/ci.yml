@@ -12,7 +12,7 @@ jobs:
   static:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install validation tools
         run: sudo apt-get update && sudo apt-get install -y shellcheck lua5.4
       - name: Check shell scripts
@@ -29,7 +29,7 @@ jobs:
         runner: [ubuntu-24.04, ubuntu-24.04-arm]
     runs-on: ${{ matrix.runner }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install the complete environment
         run: ./bin/nvim-go install
       - name: Diagnose the installation
@@ -40,7 +40,7 @@ jobs:
     steps:
       - name: Install checkout requirements
         run: apt-get update && apt-get install -y bash ca-certificates git
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Install the complete environment
         run: ./bin/nvim-go install
       - name: Diagnose the installation
