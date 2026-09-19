@@ -3,7 +3,7 @@
 A reproducible, fast Go development environment for Neovim, designed for
 Ubuntu, Debian and WSL on amd64 or arm64.
 
-The project installs pinned versions of Neovim, Go, Go development tools and
+The project installs pinned versions of Neovim, Go, tree-sitter, Go development tools and
 LazyVim plugins into the current user's home directory. System administrator
 access is used only when an apt package is missing.
 
@@ -27,7 +27,7 @@ nvim-go install
 nvim-go update
 nvim-go update --check
 nvim-go update --dry-run
-nvim-go update --version v1.0.0
+nvim-go update --version v1.0.1
 nvim-go doctor
 nvim-go rollback
 nvim-go version

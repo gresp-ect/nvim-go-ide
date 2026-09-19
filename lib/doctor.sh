@@ -25,7 +25,7 @@ check_command() {
   if command_exists "$name"; then pass "$name: $(command -v "$name")"; else fail "$name is missing"; fi
 }
 
-for command_name in git curl tar nvim go gopls gofumpt goimports golangci-lint dlv; do
+for command_name in git curl tar nvim go tree-sitter gopls gofumpt goimports golangci-lint dlv; do
   check_command "$command_name"
 done
 
@@ -33,6 +33,13 @@ if command_exists nvim && [[ "$(nvim --version | head -n1)" == "NVIM v${NEOVIM_V
   pass "Neovim version ${NEOVIM_VERSION}"
 else
   fail "Expected Neovim ${NEOVIM_VERSION}"
+fi
+
+if command_exists tree-sitter \
+  && [[ "$(tree-sitter --version)" == "tree-sitter ${TREE_SITTER_VERSION}" ]]; then
+  pass "tree-sitter version ${TREE_SITTER_VERSION}"
+else
+  fail "Expected tree-sitter ${TREE_SITTER_VERSION}"
 fi
 
 if command_exists go && [[ "$(go version)" == *"go${GO_VERSION}"* ]]; then

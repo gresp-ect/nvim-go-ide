@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented in this file.
 
+## [1.0.1] - 2026-09-19
+
+### Fixed
+
+- Install and verify the pinned tree-sitter CLI on fresh systems.
+- Prevent headless plugin setup from depending on an unfinished Mason install.
+
 ## [1.0.0] - 2026-09-18
 
 ### Added

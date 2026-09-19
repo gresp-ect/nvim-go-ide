@@ -16,6 +16,7 @@ install_system_dependencies() {
   command_exists git || missing+=(git)
   command_exists curl || missing+=(curl)
   command_exists tar || missing+=(tar)
+  command_exists gzip || missing+=(gzip)
   command_exists unzip || missing+=(unzip)
   command_exists cc || missing+=(build-essential)
   command_exists rg || missing+=(ripgrep)
@@ -82,6 +83,37 @@ install_go() {
   replace_symlink "${target}/bin/gofmt" "${LOCAL_BIN}/gofmt"
 }
 
+install_tree_sitter() {
+  if command_exists tree-sitter \
+    && [[ "$(tree-sitter --version)" == "tree-sitter ${TREE_SITTER_VERSION}" ]]; then
+    info "tree-sitter ${TREE_SITTER_VERSION} is already installed."
+    return 0
+  fi
+
+  local target="${OPT_ROOT}/tree-sitter/${TREE_SITTER_VERSION}"
+  if [[ ! -x "${target}/bin/tree-sitter" ]]; then
+    local temp archive checksum_name checksum release_arch
+    temp="$(mktemp -d)"
+    archive="${temp}/tree-sitter.gz"
+    checksum_name="TREE_SITTER_SHA256_${SYSTEM_ARCH^^}"
+    checksum="${!checksum_name:-}"
+    case "$SYSTEM_ARCH" in
+      amd64) release_arch="x64" ;;
+      arm64) release_arch="arm64" ;;
+    esac
+    info "Downloading tree-sitter ${TREE_SITTER_VERSION} for ${SYSTEM_ARCH}."
+    download \
+      "https://github.com/tree-sitter/tree-sitter/releases/download/v${TREE_SITTER_VERSION}/tree-sitter-linux-${release_arch}.gz" \
+      "$archive"
+    verify_sha256 "$archive" "$checksum"
+    mkdir -p "${target}/bin"
+    gzip -dc "$archive" >"${target}/bin/tree-sitter"
+    chmod 0755 "${target}/bin/tree-sitter"
+    rm -rf "$temp"
+  fi
+  replace_symlink "${target}/bin/tree-sitter" "${LOCAL_BIN}/tree-sitter"
+}
+
 tool_matches() {
   local binary="$1" module="$2" version="$3"
   [[ -x "${LOCAL_BIN}/${binary}" ]] || return 1
@@ -131,6 +163,7 @@ install_system_dependencies
 ensure_shell_path
 install_neovim
 install_go
+install_tree_sitter
 install_go_tools
 create_user_overrides
 
