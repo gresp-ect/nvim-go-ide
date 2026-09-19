@@ -16,10 +16,11 @@ grep -Fq 'gopls|golang.org/x/tools/gopls|v' "$ROOT/manifests/go-tools.txt"
 grep -Fq 'position = "bottom"' "$ROOT/config/lua/config/terminal.lua"
 grep -Fq 'position = "bottom"' "$ROOT/config/lua/config/runner.lua"
 
+expected_version="$(sed -n 's/^PROJECT_VERSION=//p' "$ROOT/manifests/versions.env")"
 version="$("$ROOT/bin/nvim-go" version)"
-[[ "$version" == "nvim-go 1.0.0" ]]
+[[ "$version" == "nvim-go ${expected_version}" ]]
 
-output="$(NVIM_GO_LATEST_TAG=v1.0.1 "$ROOT/bin/nvim-go" update --check)"
-grep -Fq 'Target release:  v1.0.1' <<<"$output"
+output="$(NVIM_GO_LATEST_TAG=v9.9.9 "$ROOT/bin/nvim-go" update --check)"
+grep -Fq 'Target release:  v9.9.9' <<<"$output"
 
 printf 'All static tests passed.\n'
