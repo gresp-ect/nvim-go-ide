@@ -8,6 +8,7 @@ All notable changes to this project are documented in this file.
 
 - Install and verify the pinned tree-sitter CLI on fresh systems.
 - Prevent headless plugin setup from depending on an unfinished Mason install.
+- Declare Ubuntu 24.04 LTS as the exact supported platform.
 
 ## [1.0.0] - 2026-09-18
 

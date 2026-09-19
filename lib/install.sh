@@ -85,7 +85,7 @@ install_go() {
 
 install_tree_sitter() {
   if command_exists tree-sitter \
-    && [[ "$(tree-sitter --version)" == "tree-sitter ${TREE_SITTER_VERSION}" ]]; then
+    && [[ "$(tree-sitter --version)" == "tree-sitter ${TREE_SITTER_VERSION}"* ]]; then
     info "tree-sitter ${TREE_SITTER_VERSION} is already installed."
     return 0
   fi

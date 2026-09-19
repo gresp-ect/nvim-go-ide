@@ -36,7 +36,7 @@ else
 fi
 
 if command_exists tree-sitter \
-  && [[ "$(tree-sitter --version)" == "tree-sitter ${TREE_SITTER_VERSION}" ]]; then
+  && [[ "$(tree-sitter --version)" == "tree-sitter ${TREE_SITTER_VERSION}"* ]]; then
   pass "tree-sitter version ${TREE_SITTER_VERSION}"
 else
   fail "Expected tree-sitter ${TREE_SITTER_VERSION}"

@@ -1,11 +1,14 @@
 # nvim-go-ide
 
 A reproducible, fast Go development environment for Neovim, designed for
-Ubuntu, Debian and WSL on amd64 or arm64.
+**Ubuntu 24.04 LTS** and **WSL Ubuntu 24.04 LTS** on amd64 or arm64.
 
 The project installs pinned versions of Neovim, Go, tree-sitter, Go development tools and
 LazyVim plugins into the current user's home directory. System administrator
 access is used only when an apt package is missing.
+
+Other Ubuntu releases, Debian and other Linux distributions are intentionally
+rejected so the tested installation remains deterministic.
 
 ## Quick install
 

@@ -41,13 +41,12 @@ load_manifest() {
 }
 
 detect_platform() {
-  [[ -r /etc/os-release ]] || die "Only Ubuntu and Debian are supported."
+  [[ -r /etc/os-release ]] || die "Only Ubuntu 24.04 LTS is supported."
   # shellcheck disable=SC1091
   source /etc/os-release
-  case "${ID:-}" in
-    ubuntu|debian) DISTRO="$ID" ;;
-    *) die "Unsupported distribution '${ID:-unknown}'. Use Ubuntu or Debian." ;;
-  esac
+  [[ "${ID:-}" == "ubuntu" && "${VERSION_ID:-}" == "24.04" ]] \
+    || die "Unsupported system. nvim-go-ide requires Ubuntu 24.04 LTS."
+  DISTRO="ubuntu-24.04"
 
   case "$(uname -m)" in
     x86_64|amd64)

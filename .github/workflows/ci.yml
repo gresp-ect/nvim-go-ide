@@ -34,14 +34,3 @@ jobs:
         run: ./bin/nvim-go install
       - name: Diagnose the installation
         run: ~/.local/bin/nvim-go doctor
-  debian:
-    runs-on: ubuntu-latest
-    container: debian:12
-    steps:
-      - name: Install checkout requirements
-        run: apt-get update && apt-get install -y bash ca-certificates git
-      - uses: actions/checkout@v7
-      - name: Install the complete environment
-        run: ./bin/nvim-go install
-      - name: Diagnose the installation
-        run: ~/.local/bin/nvim-go doctor
