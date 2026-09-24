@@ -17,6 +17,7 @@ All notable changes to this project are documented in this file.
 - Show Git change markers and current-line blame annotations while editing.
 - Preview and navigate changed hunks or open file diffs with LazyVim's built-in GitSigns actions.
 - Add or remove JSON struct tags and generate interface method stubs from dedicated Go shortcuts.
+- Debug the current Go file, package, or test with project-level environment variables and startup arguments.
 
 ## [1.0.1] - 2026-09-19
 

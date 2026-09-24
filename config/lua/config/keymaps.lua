@@ -2,6 +2,7 @@ local runner = require("config.runner")
 local terminal = require("config.terminal")
 local go_test = require("config.go_test")
 local go_generate = require("config.go_generate")
+local debug = require("config.debug")
 
 local function shell_command(name, command, description, label)
   vim.api.nvim_create_user_command(name, function()
@@ -51,6 +52,15 @@ vim.api.nvim_create_user_command("GoTestOutput", go_test.output, {
 })
 vim.api.nvim_create_user_command("GoCoverageClear", go_test.clear_coverage, {
   desc = "Clear Go coverage markers",
+})
+vim.api.nvim_create_user_command("GoDebugFile", debug.file, {
+  desc = "Debug the current Go file with project settings",
+})
+vim.api.nvim_create_user_command("GoDebugPackage", debug.package, {
+  desc = "Debug the current Go package with project settings",
+})
+vim.api.nvim_create_user_command("GoDebugTest", debug.test, {
+  desc = "Debug the Go test function under the cursor with project settings",
 })
 vim.api.nvim_create_user_command("GoSaveCheckOutput", require("config.save_check").output, {
   desc = "Show the latest Go save-check output",
@@ -106,3 +116,6 @@ vim.keymap.set("n", "<leader>tc", "<cmd>GoCoverageClear<cr>", { desc = "Go: Clea
 vim.keymap.set("n", "<leader>rt", "<cmd>GoTest<cr>", { desc = "Go: Test all packages" })
 vim.keymap.set("n", "<leader>rv", "<cmd>GoTestVerbose<cr>", { desc = "Go: Test all packages (verbose)" })
 vim.keymap.set("n", "<leader>rV", "<cmd>GoVet<cr>", { desc = "Go: Vet all packages" })
+vim.keymap.set("n", "<leader>ddf", "<cmd>GoDebugFile<cr>", { desc = "Go: Debug current file" })
+vim.keymap.set("n", "<leader>ddp", "<cmd>GoDebugPackage<cr>", { desc = "Go: Debug current package" })
+vim.keymap.set("n", "<leader>ddt", "<cmd>GoDebugTest<cr>", { desc = "Go: Debug current test" })
