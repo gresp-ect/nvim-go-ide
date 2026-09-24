@@ -2,9 +2,9 @@ local runner = require("config.runner")
 local terminal = require("config.terminal")
 local go_test = require("config.go_test")
 
-local function shell_command(name, command, description)
+local function shell_command(name, command, description, label)
   vim.api.nvim_create_user_command(name, function()
-    runner.run(command)
+    runner.run(command, { label = label or description })
   end, { desc = description })
 end
 
@@ -14,6 +14,10 @@ end, {
   nargs = "+",
   complete = "shellcmd",
   desc = "Run a shell command in the bottom terminal",
+})
+
+vim.api.nvim_create_user_command("TaskRerun", require("config.task_status").rerun, {
+  desc = "Run the most recent task again",
 })
 
 vim.api.nvim_create_user_command("Terminal", function(opts)
@@ -70,6 +74,7 @@ vim.keymap.set("n", "<leader>ri", "<cmd>GoTidy<cr>", { desc = "Go: Tidy module" 
 vim.keymap.set("n", "<leader>rl", "<cmd>GoLint<cr>", { desc = "Go: Lint all packages" })
 vim.keymap.set("n", "<leader>rp", "<cmd>GoRunPackage<cr>", { desc = "Go: Run current package" })
 vim.keymap.set("n", "<leader>rr", "<cmd>GoRun<cr>", { desc = "Go: Run root package" })
+vim.keymap.set("n", "<leader>r.", "<cmd>TaskRerun<cr>", { desc = "Task: Run again" })
 vim.keymap.set("n", "<leader>tn", "<cmd>GoTestNearest<cr>", { desc = "Go: Test function" })
 vim.keymap.set("n", "<leader>tp", "<cmd>GoTestPackage<cr>", { desc = "Go: Test current package" })
 vim.keymap.set("n", "<leader>to", "<cmd>GoTestOutput<cr>", { desc = "Go: Show test output" })

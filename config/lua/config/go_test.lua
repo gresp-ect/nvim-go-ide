@@ -1,4 +1,5 @@
 local M = {}
+local task_status = require("config.task_status")
 
 local namespace = vim.api.nvim_create_namespace("nvim-go-coverage")
 local coverage = {}
@@ -173,13 +174,7 @@ local function output_lines(stdout, stderr)
   return lines
 end
 
-local function run_test(name)
-  local _, file = current_go_file()
-  if not file or not save_all() then
-    return
-  end
-
-  local package_dir = vim.fs.dirname(file)
+local function execute_test(name, package_dir)
   local profile = vim.fn.tempname() .. ".cover"
   local command = { "go", "test", "-json", "-coverprofile=" .. profile }
   if name then
@@ -187,7 +182,13 @@ local function run_test(name)
   end
   table.insert(command, ".")
 
-  notify(name and ("Running " .. name .. "…") or "Running current package tests…")
+  local label = name and ("Test " .. name) or "Test current package"
+  task_status.remember(label, function()
+    if save_all() then
+      execute_test(name, package_dir)
+    end
+  end)
+  local task = task_status.start(label)
   vim.system(command, { cwd = package_dir, text = true }, function(result)
     vim.schedule(function()
       last_output = output_lines(result.stdout, result.stderr)
@@ -199,7 +200,7 @@ local function run_test(name)
 
       if result.code == 0 then
         vim.fn.setqflist({}, "r", { title = "Go test", items = {} })
-        notify("Tests passed" .. (percentage and (" · coverage " .. percentage) or ""))
+        task_status.finish(task, true, percentage and ("coverage " .. percentage) or nil)
         return
       end
 
@@ -207,12 +208,24 @@ local function run_test(name)
       vim.fn.setqflist({}, "r", { title = "Go test failures", items = items })
       if #items > 0 then
         vim.cmd("cfirst")
-        notify("Tests failed · jumped to the first failure" .. (percentage and (" · coverage " .. percentage) or ""), vim.log.levels.ERROR)
+        local detail = "jumped to first failure"
+        if percentage then
+          detail = detail .. " · coverage " .. percentage
+        end
+        task_status.finish(task, false, detail)
       else
-        notify("Tests failed; use :GoTestOutput to inspect the output.", vim.log.levels.ERROR)
+        task_status.finish(task, false, "use :GoTestOutput for details")
       end
     end)
   end)
+end
+
+local function run_test(name)
+  local _, file = current_go_file()
+  if not file or not save_all() then
+    return
+  end
+  execute_test(name, vim.fs.dirname(file))
 end
 
 function M.nearest()

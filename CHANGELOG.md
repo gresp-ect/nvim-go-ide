@@ -12,6 +12,8 @@ All notable changes to this project are documented in this file.
 - Run the Go test function under the cursor or the current package with one command.
 - Jump to the first reported failure and keep all failure locations in quickfix.
 - Report statement coverage and highlight uncovered Go source lines.
+- Show consistent success or failure notifications with elapsed time for run, build and test tasks.
+- Re-run the most recent task with `:TaskRerun` or `Space r .`.
 
 ## [1.0.1] - 2026-09-19
 

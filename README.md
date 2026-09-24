@@ -43,8 +43,9 @@ three most recent releases are retained for rollback.
 ## Go workflow
 
 Open Neovim from a directory containing `go.mod`. Run and build commands save
-modified buffers and display output in a bottom task terminal until any key is
-pressed. Focused test commands run asynchronously and report results in-place.
+modified buffers and display output in a bottom task terminal. Run, build and
+test tasks report a clear success or failure notification with elapsed time.
+Focused test commands run asynchronously and report results in-place.
 
 | Command | Action |
 | --- | --- |
@@ -64,9 +65,10 @@ pressed. Focused test commands run asynchronously and report results in-place.
 | `:GoTidy` | Tidy the module |
 | `:GoGenerate` | Run Go code generation |
 | `:Run command` | Run any shell command in the bottom task terminal |
+| `:TaskRerun` | Run the most recent task again in its original context |
 
 `F5` runs the current package. The same actions are available below the
-`Space r` key group.
+`Space r` key group. Use `Space r .` to run the most recent task again.
 
 `Space t n` runs the test function under the cursor and `Space t p` tests its
 package. A failed run jumps directly to the first source location reported by

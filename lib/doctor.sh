@@ -62,7 +62,7 @@ fi
 
 if command_exists nvim && nvim --headless \
   "+doautocmd User VeryLazy" \
-  "+lua assert(vim.fn.exists(':Run') == 2); assert(vim.fn.exists(':GoRunPackage') == 2); assert(vim.fn.exists(':Terminal') == 2)" \
+  "+lua assert(vim.fn.exists(':Run') == 2); assert(vim.fn.exists(':GoRunPackage') == 2); assert(vim.fn.exists(':TaskRerun') == 2); assert(vim.fn.exists(':Terminal') == 2)" \
   "+qa" >/dev/null 2>&1; then
   pass "Runner and terminal commands"
 else
