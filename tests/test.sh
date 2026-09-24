@@ -41,6 +41,7 @@ grep -Fq 'vim.api.nvim_create_user_command("GoDebugPackage"' "$ROOT/config/lua/c
 grep -Fq 'vim.api.nvim_create_user_command("GoDebugTest"' "$ROOT/config/lua/config/keymaps.lua"
 grep -Fq 'local config_name = ".nvim-go-debug.json"' "$ROOT/config/lua/config/debug.lua"
 grep -Fq 'current_test = "Go: Current test"' "$ROOT/config/lua/config/debug.lua"
+grep -Fq 'program = require("dap").ABORT' "$ROOT/config/lua/config/debug.lua"
 grep -Fq 'opts.dap_configurations = require("config.debug").configurations()' "$ROOT/config/lua/plugins/go.lua"
 grep -Fq '{ "gomodifytags", "-file", file, "-offset"' "$ROOT/config/lua/config/go_generate.lua"
 grep -Fq '{ "impl", receiver, interface }' "$ROOT/config/lua/config/go_generate.lua"

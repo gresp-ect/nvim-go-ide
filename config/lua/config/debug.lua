@@ -172,7 +172,20 @@ function M.configurations()
     }
     setmetatable(template, {
       __call = function()
-        return configuration(kind) or require("dap").ABORT
+        local resolved = configuration(kind)
+        if resolved then
+          return resolved
+        end
+
+        -- nvim-dap only recognizes ABORT in a top-level configuration field;
+        -- returning it as the whole dynamic configuration would continue with
+        -- a table that has no adapter type.
+        return {
+          type = template.type,
+          request = template.request,
+          name = template.name,
+          program = require("dap").ABORT,
+        }
       end,
     })
     table.insert(configurations, template)

@@ -63,6 +63,7 @@ fi
 if command_exists nvim && nvim --headless \
   "+doautocmd User VeryLazy" \
   "+lua assert(vim.fn.exists(':Run') == 2); assert(vim.fn.exists(':GoRunPackage') == 2); assert(vim.fn.exists(':GoAddJSONTags') == 2); assert(vim.fn.exists(':GoRemoveJSONTags') == 2); assert(vim.fn.exists(':GoImpl') == 2); assert(vim.fn.exists(':GoDebugFile') == 2); assert(vim.fn.exists(':GoDebugPackage') == 2); assert(vim.fn.exists(':GoDebugTest') == 2); assert(vim.fn.exists(':TaskRerun') == 2); assert(vim.fn.exists(':Terminal') == 2)" \
+  "+lua local dap = require('dap'); local aborted = require('config.debug').configurations()[1](); assert(aborted.program == dap.ABORT)" \
   "+qa" >/dev/null 2>&1; then
   pass "Runner, Go generation, debugging and terminal commands"
 else
