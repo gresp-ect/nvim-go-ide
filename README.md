@@ -30,7 +30,7 @@ nvim-go install
 nvim-go update
 nvim-go update --check
 nvim-go update --dry-run
-nvim-go update --version v1.0.1
+nvim-go update --version v1.1.0
 nvim-go doctor
 nvim-go rollback
 nvim-go version

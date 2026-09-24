@@ -4,6 +4,8 @@ All notable changes to this project are documented in this file.
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-09-25
+
 ### Added
 
 - Automatically organize imports and format Go files before saving.
@@ -18,6 +20,10 @@ All notable changes to this project are documented in this file.
 - Preview and navigate changed hunks or open file diffs with LazyVim's built-in GitSigns actions.
 - Add or remove JSON struct tags and generate interface method stubs from dedicated Go shortcuts.
 - Debug the current Go file, package, or test with project-level environment variables and startup arguments.
+
+### Fixed
+
+- Exit cleanly when a Go debug template is selected without a valid Go project or configuration.
 
 ## [1.0.1] - 2026-09-19
 
