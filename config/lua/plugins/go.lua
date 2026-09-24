@@ -73,20 +73,22 @@ return {
   {
     "leoluz/nvim-dap-go",
     lazy = true,
-    opts = {
-      delve = {
+    opts = function(_, opts)
+      opts.delve = {
         path = vim.fn.expand("~/.local/bin/dlv"),
         detached = vim.fn.has("win32") == 0,
-      },
-    },
+      }
+      opts.dap_configurations = require("config.debug").configurations()
+    end,
   },
 
   {
     "folke/which-key.nvim",
     opts = {
       spec = {
-        { "<leader>r", group = "Run / Go" },
+        { "<leader>r", group = "Run / Go tools" },
         { "<leader>t", group = "Test" },
+        { "<leader>dd", group = "Debug Go" },
       },
     },
   },

@@ -1,6 +1,8 @@
 local runner = require("config.runner")
 local terminal = require("config.terminal")
 local go_test = require("config.go_test")
+local go_generate = require("config.go_generate")
+local debug = require("config.debug")
 
 local function shell_command(name, command, description, label)
   vim.api.nvim_create_user_command(name, function()
@@ -51,8 +53,37 @@ vim.api.nvim_create_user_command("GoTestOutput", go_test.output, {
 vim.api.nvim_create_user_command("GoCoverageClear", go_test.clear_coverage, {
   desc = "Clear Go coverage markers",
 })
+vim.api.nvim_create_user_command("GoDebugFile", debug.file, {
+  desc = "Debug the current Go file with project settings",
+})
+vim.api.nvim_create_user_command("GoDebugPackage", debug.package, {
+  desc = "Debug the current Go package with project settings",
+})
+vim.api.nvim_create_user_command("GoDebugTest", debug.test, {
+  desc = "Debug the Go test function under the cursor with project settings",
+})
 vim.api.nvim_create_user_command("GoSaveCheckOutput", require("config.save_check").output, {
   desc = "Show the latest Go save-check output",
+})
+vim.api.nvim_create_user_command("GoAddJSONTags", go_generate.add_json_tags, {
+  desc = "Add snake_case JSON tags to the struct under the cursor",
+})
+vim.api.nvim_create_user_command("GoRemoveJSONTags", go_generate.remove_json_tags, {
+  desc = "Remove JSON tags from the struct under the cursor",
+})
+vim.api.nvim_create_user_command("GoImpl", function(opts)
+  local receiver
+  local interface
+  if #opts.fargs > 1 then
+    interface = opts.fargs[#opts.fargs]
+    receiver = table.concat(opts.fargs, " ", 1, #opts.fargs - 1)
+  elseif #opts.fargs == 1 then
+    receiver = opts.fargs[1]
+  end
+  go_generate.impl(receiver, interface)
+end, {
+  nargs = "*",
+  desc = "Generate methods for a receiver to implement an interface",
 })
 
 shell_command("GoRun", "go run .", "Run the root Go package")
@@ -71,7 +102,10 @@ vim.keymap.set("n", "<leader>rb", "<cmd>GoBuild<cr>", { desc = "Go: Build all pa
 vim.keymap.set("n", "<leader>rf", "<cmd>GoRunFile<cr>", { desc = "Go: Run current file" })
 vim.keymap.set("n", "<leader>rg", "<cmd>GoGenerate<cr>", { desc = "Go: Generate" })
 vim.keymap.set("n", "<leader>ri", "<cmd>GoTidy<cr>", { desc = "Go: Tidy module" })
+vim.keymap.set("n", "<leader>rj", "<cmd>GoAddJSONTags<cr>", { desc = "Go: Add JSON tags" })
+vim.keymap.set("n", "<leader>rJ", "<cmd>GoRemoveJSONTags<cr>", { desc = "Go: Remove JSON tags" })
 vim.keymap.set("n", "<leader>rl", "<cmd>GoLint<cr>", { desc = "Go: Lint all packages" })
+vim.keymap.set("n", "<leader>rm", "<cmd>GoImpl<cr>", { desc = "Go: Implement interface" })
 vim.keymap.set("n", "<leader>rp", "<cmd>GoRunPackage<cr>", { desc = "Go: Run current package" })
 vim.keymap.set("n", "<leader>rr", "<cmd>GoRun<cr>", { desc = "Go: Run root package" })
 vim.keymap.set("n", "<leader>r.", "<cmd>TaskRerun<cr>", { desc = "Task: Run again" })
@@ -82,3 +116,6 @@ vim.keymap.set("n", "<leader>tc", "<cmd>GoCoverageClear<cr>", { desc = "Go: Clea
 vim.keymap.set("n", "<leader>rt", "<cmd>GoTest<cr>", { desc = "Go: Test all packages" })
 vim.keymap.set("n", "<leader>rv", "<cmd>GoTestVerbose<cr>", { desc = "Go: Test all packages (verbose)" })
 vim.keymap.set("n", "<leader>rV", "<cmd>GoVet<cr>", { desc = "Go: Vet all packages" })
+vim.keymap.set("n", "<leader>ddf", "<cmd>GoDebugFile<cr>", { desc = "Go: Debug current file" })
+vim.keymap.set("n", "<leader>ddp", "<cmd>GoDebugPackage<cr>", { desc = "Go: Debug current package" })
+vim.keymap.set("n", "<leader>ddt", "<cmd>GoDebugTest<cr>", { desc = "Go: Debug current test" })

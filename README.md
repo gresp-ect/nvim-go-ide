@@ -59,22 +59,72 @@ Focused test commands run asynchronously and report results in-place.
 | `:GoTestPackage` | Test the current package and show coverage |
 | `:GoTestOutput` | Show the latest structured test output |
 | `:GoCoverageClear` | Clear uncovered-line markers |
+| `:GoDebugFile` | Debug the current Go file with project settings |
+| `:GoDebugPackage` | Debug the current Go package with project settings |
+| `:GoDebugTest` | Debug the test function under the cursor with project settings |
 | `:GoSaveCheckOutput` | Show output from the latest save-time test or vet run |
 | `:GoVet` | Vet all packages |
 | `:GoLint` | Run golangci-lint |
 | `:GoTidy` | Tidy the module |
 | `:GoGenerate` | Run Go code generation |
+| `:GoAddJSONTags` | Add snake_case JSON tags to the struct under the cursor |
+| `:GoRemoveJSONTags` | Remove JSON tags from the struct under the cursor |
+| `:GoImpl [receiver] [interface]` | Generate interface method stubs and append them to the current file |
 | `:Run command` | Run any shell command in the bottom task terminal |
 | `:TaskRerun` | Run the most recent task again in its original context |
 
 `F5` runs the current package. The same actions are available below the
 `Space r` key group. Use `Space r .` to run the most recent task again.
 
+For Go-specific code generation, place the cursor anywhere in a struct and use
+`Space r j` to add snake_case JSON tags to its exported fields, or `Space r J`
+to remove its JSON tags. Use `Space r m` to enter a receiver (for example,
+`s *Server`) and an interface (for example, `io.Reader`); the generated method
+stubs are appended to the current file. The equivalent command can also take
+arguments directly, as in `:GoImpl s *Server io.Reader`.
+
 `Space t n` runs the test function under the cursor and `Space t p` tests its
 package. A failed run jumps directly to the first source location reported by
 Go and also fills the quickfix list for subsequent failures. Each run reports
 the statement coverage percentage and highlights uncovered lines. Use
 `Space t o` to inspect the complete output and `Space t c` to clear coverage.
+
+## Project debugging
+
+The debugger includes templates for the current file, the package containing
+the current file, and the test function under the cursor. Start them with
+`:GoDebugFile`, `:GoDebugPackage`, and `:GoDebugTest`, or use `Space d d f`,
+`Space d d p`, and `Space d d t`. They are also available in the standard DAP
+configuration picker.
+
+Add `.nvim-go-debug.json` next to the project's `go.mod` to supply environment
+variables and startup arguments. This is useful for Web and API services that
+need a port, development mode, or a configuration path:
+
+```json
+{
+  "env": {
+    "APP_ENV": "development",
+    "HTTP_PORT": "8080"
+  },
+  "args": ["serve", "--config", "config/dev.yaml"],
+  "current_package": {
+    "args": ["--log-level", "debug"],
+    "env": {
+      "COMPONENT": "api"
+    }
+  },
+  "current_test": {
+    "args": ["-test.v"]
+  }
+}
+```
+
+Top-level `env` and `args` apply to all three templates. Optional
+`current_file`, `current_package`, and `current_test` objects add arguments and
+override environment variables for one template. Environment keys and values,
+and every argument, must be strings. The debugger reloads the file before each
+session and runs from the module root. Do not commit secrets in this file.
 
 ## Terminal sessions
 
@@ -109,6 +159,7 @@ Use `Space u G` to toggle sign-column markers and
 - Rename and code actions: `Space c r` and `Space c a`
 - Organize imports and format: `Space c o` and `Space c f`
 - Breakpoint and debugger: `Space d b` and `Space d c`
+- Project debug templates: `Space d d f`, `Space d d p` and `Space d d t`
 - Current test function and package: `Space t n` and `Space t p`
 - Neotest nearest test and test summary: `Space t r` and `Space t s`
 

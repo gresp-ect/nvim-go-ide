@@ -27,7 +27,7 @@ local function current_go_file()
   return buf, vim.fs.normalize(file)
 end
 
-local function current_test_name(buf)
+function M.current_test_name(buf)
   local ok, node = pcall(vim.treesitter.get_node, { bufnr = buf })
   if ok then
     while node do
@@ -233,7 +233,7 @@ function M.nearest()
   if not buf then
     return
   end
-  local name = current_test_name(buf)
+  local name = M.current_test_name(buf)
   if not name then
     notify("Place the cursor inside a Go test function.", vim.log.levels.ERROR)
     return
