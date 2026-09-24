@@ -42,8 +42,9 @@ three most recent releases are retained for rollback.
 
 ## Go workflow
 
-Open Neovim from a directory containing `go.mod`. Commands save modified
-buffers and display output in a bottom task terminal until any key is pressed.
+Open Neovim from a directory containing `go.mod`. Run and build commands save
+modified buffers and display output in a bottom task terminal until any key is
+pressed. Focused test commands run asynchronously and report results in-place.
 
 | Command | Action |
 | --- | --- |
@@ -53,6 +54,10 @@ buffers and display output in a bottom task terminal until any key is pressed.
 | `:GoBuild` | Build all packages |
 | `:GoTest` | Test all packages |
 | `:GoTestVerbose` | Test all packages verbosely |
+| `:GoTestNearest` | Test the function under the cursor and show coverage |
+| `:GoTestPackage` | Test the current package and show coverage |
+| `:GoTestOutput` | Show the latest structured test output |
+| `:GoCoverageClear` | Clear uncovered-line markers |
 | `:GoVet` | Vet all packages |
 | `:GoLint` | Run golangci-lint |
 | `:GoTidy` | Tidy the module |
@@ -61,6 +66,12 @@ buffers and display output in a bottom task terminal until any key is pressed.
 
 `F5` runs the current package. The same actions are available below the
 `Space r` key group.
+
+`Space t n` runs the test function under the cursor and `Space t p` tests its
+package. A failed run jumps directly to the first source location reported by
+Go and also fills the quickfix list for subsequent failures. Each run reports
+the statement coverage percentage and highlights uncovered lines. Use
+`Space t o` to inspect the complete output and `Space t c` to clear coverage.
 
 ## Terminal sessions
 
@@ -78,7 +89,8 @@ so running a program never replaces the persistent shell session.
 - Rename and code actions: `Space c r` and `Space c a`
 - Organize imports and format: `Space c o` and `Space c f`
 - Breakpoint and debugger: `Space d b` and `Space d c`
-- Nearest test and test summary: `Space t r` and `Space t s`
+- Current test function and package: `Space t n` and `Space t p`
+- Neotest nearest test and test summary: `Space t r` and `Space t s`
 
 ## Personal configuration
 

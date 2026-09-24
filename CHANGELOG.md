@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented in this file.
 
+## [Unreleased]
+
+### Added
+
+- Run the Go test function under the cursor or the current package with one command.
+- Jump to the first reported failure and keep all failure locations in quickfix.
+- Report statement coverage and highlight uncovered Go source lines.
+
 ## [1.0.1] - 2026-09-19
 
 ### Fixed

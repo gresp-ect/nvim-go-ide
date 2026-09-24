@@ -68,6 +68,7 @@ return {
     opts = {
       spec = {
         { "<leader>r", group = "Run / Go" },
+        { "<leader>t", group = "Test" },
       },
     },
   },

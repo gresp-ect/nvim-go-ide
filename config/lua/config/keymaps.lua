@@ -1,5 +1,6 @@
 local runner = require("config.runner")
 local terminal = require("config.terminal")
+local go_test = require("config.go_test")
 
 local function shell_command(name, command, description)
   vim.api.nvim_create_user_command(name, function()
@@ -34,6 +35,18 @@ vim.api.nvim_create_user_command("GoRunFile", runner.go_file, {
 vim.api.nvim_create_user_command("GoRunPackage", runner.go_package, {
   desc = "Run the Go package containing the current file",
 })
+vim.api.nvim_create_user_command("GoTestNearest", go_test.nearest, {
+  desc = "Test the Go test function under the cursor",
+})
+vim.api.nvim_create_user_command("GoTestPackage", go_test.package, {
+  desc = "Test the package containing the current Go file",
+})
+vim.api.nvim_create_user_command("GoTestOutput", go_test.output, {
+  desc = "Show the latest Go test output",
+})
+vim.api.nvim_create_user_command("GoCoverageClear", go_test.clear_coverage, {
+  desc = "Clear Go coverage markers",
+})
 
 shell_command("GoRun", "go run .", "Run the root Go package")
 shell_command("GoBuild", "go build ./...", "Build all Go packages")
@@ -54,6 +67,10 @@ vim.keymap.set("n", "<leader>ri", "<cmd>GoTidy<cr>", { desc = "Go: Tidy module" 
 vim.keymap.set("n", "<leader>rl", "<cmd>GoLint<cr>", { desc = "Go: Lint all packages" })
 vim.keymap.set("n", "<leader>rp", "<cmd>GoRunPackage<cr>", { desc = "Go: Run current package" })
 vim.keymap.set("n", "<leader>rr", "<cmd>GoRun<cr>", { desc = "Go: Run root package" })
+vim.keymap.set("n", "<leader>tn", "<cmd>GoTestNearest<cr>", { desc = "Go: Test function" })
+vim.keymap.set("n", "<leader>tp", "<cmd>GoTestPackage<cr>", { desc = "Go: Test current package" })
+vim.keymap.set("n", "<leader>to", "<cmd>GoTestOutput<cr>", { desc = "Go: Show test output" })
+vim.keymap.set("n", "<leader>tc", "<cmd>GoCoverageClear<cr>", { desc = "Go: Clear coverage" })
 vim.keymap.set("n", "<leader>rt", "<cmd>GoTest<cr>", { desc = "Go: Test all packages" })
 vim.keymap.set("n", "<leader>rv", "<cmd>GoTestVerbose<cr>", { desc = "Go: Test all packages (verbose)" })
 vim.keymap.set("n", "<leader>rV", "<cmd>GoVet<cr>", { desc = "Go: Vet all packages" })
