@@ -14,6 +14,8 @@ All notable changes to this project are documented in this file.
 - Report statement coverage and highlight uncovered Go source lines.
 - Show consistent success or failure notifications with elapsed time for run, build and test tasks.
 - Re-run the most recent task with `:TaskRerun` or `Space r .`.
+- Show Git change markers and current-line blame annotations while editing.
+- Preview and navigate changed hunks or open file diffs with LazyVim's built-in GitSigns actions.
 
 ## [1.0.1] - 2026-09-19
 

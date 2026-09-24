@@ -84,6 +84,23 @@ bottom split. Its directory and history remain available while Neovim is open.
 Task commands such as `:Run` and `:GoRunPackage` use a separate bottom terminal
 so running a program never replaces the persistent shell session.
 
+## Git workflow
+
+Git changes are marked in the sign column, including changes in untracked
+files. The current line also shows a short blame annotation after a brief
+delay. LazyVim's built-in GitSigns actions provide the rest of the workflow:
+
+| Key | Action |
+| --- | --- |
+| `]h` / `[h` | Jump to the next / previous changed hunk |
+| `Space g h p` | Preview the current hunk inline |
+| `Space g h b` | Show full blame details for the current line |
+| `Space g h d` | Diff the current file against the index |
+| `Space g h D` | Diff the current file against the previous commit |
+
+Use `Space u G` to toggle sign-column markers and
+`:Gitsigns toggle_current_line_blame` to toggle inline blame annotations.
+
 ## Language features
 
 - Completion and signature help: Insert mode or `Ctrl-Space`
