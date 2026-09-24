@@ -85,7 +85,7 @@ return {
     "folke/which-key.nvim",
     opts = {
       spec = {
-        { "<leader>r", group = "Run / Go" },
+        { "<leader>r", group = "Run / Go tools" },
         { "<leader>t", group = "Test" },
       },
     },

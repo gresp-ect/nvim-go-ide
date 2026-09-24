@@ -64,11 +64,21 @@ Focused test commands run asynchronously and report results in-place.
 | `:GoLint` | Run golangci-lint |
 | `:GoTidy` | Tidy the module |
 | `:GoGenerate` | Run Go code generation |
+| `:GoAddJSONTags` | Add snake_case JSON tags to the struct under the cursor |
+| `:GoRemoveJSONTags` | Remove JSON tags from the struct under the cursor |
+| `:GoImpl [receiver] [interface]` | Generate interface method stubs and append them to the current file |
 | `:Run command` | Run any shell command in the bottom task terminal |
 | `:TaskRerun` | Run the most recent task again in its original context |
 
 `F5` runs the current package. The same actions are available below the
 `Space r` key group. Use `Space r .` to run the most recent task again.
+
+For Go-specific code generation, place the cursor anywhere in a struct and use
+`Space r j` to add snake_case JSON tags to its exported fields, or `Space r J`
+to remove its JSON tags. Use `Space r m` to enter a receiver (for example,
+`s *Server`) and an interface (for example, `io.Reader`); the generated method
+stubs are appended to the current file. The equivalent command can also take
+arguments directly, as in `:GoImpl s *Server io.Reader`.
 
 `Space t n` runs the test function under the cursor and `Space t p` tests its
 package. A failed run jumps directly to the first source location reported by

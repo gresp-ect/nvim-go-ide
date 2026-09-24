@@ -25,7 +25,7 @@ check_command() {
   if command_exists "$name"; then pass "$name: $(command -v "$name")"; else fail "$name is missing"; fi
 }
 
-for command_name in git curl tar nvim go tree-sitter gopls gofumpt goimports golangci-lint dlv; do
+for command_name in git curl tar nvim go tree-sitter gopls gofumpt goimports golangci-lint dlv gomodifytags impl; do
   check_command "$command_name"
 done
 
@@ -62,11 +62,11 @@ fi
 
 if command_exists nvim && nvim --headless \
   "+doautocmd User VeryLazy" \
-  "+lua assert(vim.fn.exists(':Run') == 2); assert(vim.fn.exists(':GoRunPackage') == 2); assert(vim.fn.exists(':TaskRerun') == 2); assert(vim.fn.exists(':Terminal') == 2)" \
+  "+lua assert(vim.fn.exists(':Run') == 2); assert(vim.fn.exists(':GoRunPackage') == 2); assert(vim.fn.exists(':GoAddJSONTags') == 2); assert(vim.fn.exists(':GoRemoveJSONTags') == 2); assert(vim.fn.exists(':GoImpl') == 2); assert(vim.fn.exists(':TaskRerun') == 2); assert(vim.fn.exists(':Terminal') == 2)" \
   "+qa" >/dev/null 2>&1; then
-  pass "Runner and terminal commands"
+  pass "Runner, Go generation and terminal commands"
 else
-  fail "Runner or terminal commands are unavailable"
+  fail "Runner, Go generation or terminal commands are unavailable"
 fi
 
 if [[ -n "${WT_SESSION:-}" ]]; then
