@@ -47,6 +47,9 @@ vim.api.nvim_create_user_command("GoTestOutput", go_test.output, {
 vim.api.nvim_create_user_command("GoCoverageClear", go_test.clear_coverage, {
   desc = "Clear Go coverage markers",
 })
+vim.api.nvim_create_user_command("GoSaveCheckOutput", require("config.save_check").output, {
+  desc = "Show the latest Go save-check output",
+})
 
 shell_command("GoRun", "go run .", "Run the root Go package")
 shell_command("GoBuild", "go build ./...", "Build all Go packages")

@@ -6,6 +6,9 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- Automatically organize imports and format Go files before saving.
+- Optionally run asynchronous tests or `go vet` for the current package after saving.
+- Keep save-time checks responsive by running `golangci-lint` only on demand.
 - Run the Go test function under the cursor or the current package with one command.
 - Jump to the first reported failure and keep all failure locations in quickfix.
 - Report statement coverage and highlight uncovered Go source lines.

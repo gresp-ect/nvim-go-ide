@@ -58,6 +58,7 @@ pressed. Focused test commands run asynchronously and report results in-place.
 | `:GoTestPackage` | Test the current package and show coverage |
 | `:GoTestOutput` | Show the latest structured test output |
 | `:GoCoverageClear` | Clear uncovered-line markers |
+| `:GoSaveCheckOutput` | Show output from the latest save-time test or vet run |
 | `:GoVet` | Vet all packages |
 | `:GoLint` | Run golangci-lint |
 | `:GoTidy` | Tidy the module |
@@ -91,6 +92,24 @@ so running a program never replaces the persistent shell session.
 - Breakpoint and debugger: `Space d b` and `Space d c`
 - Current test function and package: `Space t n` and `Space t p`
 - Neotest nearest test and test summary: `Space t r` and `Space t s`
+
+### Checks on save
+
+Saving a Go file automatically runs `goimports` followed by `gofumpt`, so
+imports and formatting are updated before the file is written. Full
+`golangci-lint` runs remain manual through `:GoLint` because they can be slow
+on large projects.
+
+An additional asynchronous check of only the current package can be enabled in
+`~/.config/nvim-go-ide/local.lua`:
+
+```lua
+vim.g.nvim_go_save_check = "test" -- go test .
+-- vim.g.nvim_go_save_check = "vet" -- go vet .
+```
+
+Leave the option unset (the default) to disable the extra check. Failed checks
+show a notification; use `:GoSaveCheckOutput` to inspect their complete output.
 
 ## Personal configuration
 

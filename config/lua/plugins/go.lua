@@ -1,6 +1,24 @@
 return {
-  -- Activates the golangci-lint integration declared by LazyVim's Go extra.
-  { "mfussenegger/nvim-lint" },
+  -- Keep golangci-lint available through :GoLint, but do not run it on every
+  -- write. Full-project linting is too expensive for the save path.
+  {
+    "mfussenegger/nvim-lint",
+    opts = function(_, opts)
+      opts.linters_by_ft = opts.linters_by_ft or {}
+      opts.linters_by_ft.go = nil
+    end,
+  },
+
+  -- Make the save-time Go pipeline explicit: goimports organizes imports and
+  -- both tools leave the buffer in canonical gofumpt form before it is written.
+  {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        go = { "goimports", "gofumpt" },
+      },
+    },
+  },
 
   {
     "mason-org/mason.nvim",
